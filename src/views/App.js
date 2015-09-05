@@ -27,6 +27,14 @@ export default class App extends React.Component {
             {from: 2, to: 4},
             {from: 2, to: 5},
           ]}
+          options={{
+            manipulation: {
+              enabled: true,
+            },
+            physics: {
+              enabled: false,
+            },
+          }}
         />
       </div>
     );

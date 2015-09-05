@@ -2,8 +2,10 @@ import path from 'path';
 import webpack from 'webpack';
 
 
-const npmPath = resolve('./node_modules');
 const srcPath = resolve('./src');
+const npmPath = resolve('./node_modules');
+const distPath = resolve('./dist');
+
 const es6Modules = [
   'vis',
 ];
@@ -23,7 +25,7 @@ export default {
     './src/index',
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: distPath,
     filename: 'bundle.js',
     publicPath: '/static/',
   },
@@ -56,6 +58,15 @@ export default {
       {
         test: /\.scss$/,
         loader: 'style!css!autoprefixer?' + JSON.stringify(autoprefixerConfig) + '!sass?' + JSON.stringify(sassConfig),
+      },
+      {
+        test: /\.css$/,
+        loader: 'style!css!autoprefixer?' + JSON.stringify(autoprefixerConfig),
+      },
+      {
+        test: /\.png$/,
+        loader: 'url',
+        query: { mimetype: 'image/png' },
       },
     ],
   },

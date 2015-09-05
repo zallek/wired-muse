@@ -4,6 +4,8 @@ import Network from 'vis-network';
 
 import * as NetworkPropTypes from 'proptypes/network';
 
+import 'vis/dist/vis.css';
+
 
 export default class VisNetwork extends React.Component {
 
