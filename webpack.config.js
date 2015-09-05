@@ -1,26 +1,46 @@
-var path = require('path');
-var webpack = require('webpack');
+import path from 'path';
+import webpack from 'webpack';
 
-module.exports = {
+
+const npmPath = resolve('./node_modules');
+const srcPath = resolve('./src');
+
+export default {
   devtool: 'eval',
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './src/index'
+    './src/index',
   ],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/static/'
+    publicPath: '/static/',
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development'),
+    }),
   ],
+  resolve: {
+    extensions: ['', '.js'],
+    alias: {
+      'vis-network': 'vis/lib/network/Network.js',
+    },
+    root: [npmPath, srcPath],
+  },
   module: {
     loaders: [{
-      test: /\.js$/,
-      loaders: ['react-hot', 'babel'],
-      include: path.join(__dirname, 'src')
-    }]
-  }
+      test: /\.jsx?$/,
+      loaders: ['react-hot', 'babel', 'eslint'],
+      include: srcPath,
+    }],
+  },
 };
+
+
+function resolve() {
+  return path.resolve(path, __dirname, ...arguments);
+}
