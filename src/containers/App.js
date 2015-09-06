@@ -34,6 +34,7 @@ class App extends Component {
         lastUpdated,
         nodes,
         edges,
+        groups,
       },
     } = this.props;
 
@@ -44,8 +45,7 @@ class App extends Component {
         >
           {lastUpdated &&
             <span>
-              Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-              {' '}
+              {`Last updated at ${new Date(lastUpdated).toLocaleTimeString()}`}
             </span>
           }
         </div>
@@ -57,13 +57,23 @@ class App extends Component {
           }
           {nodes.length > 0 &&
             <VisNetwork
-              nodes={nodes}
+              nodes={nodes.map(node => ({
+                ...node,
+                shape: 'dot',
+                mass: node.value,
+              }))}
               edges={edges.map(edge => ({
                 ...edge,
+                color: {
+                  inherit: false,
+                },
                 smooth: {
                   enabled: false,
                 },
               }))}
+              options={{
+                groups,
+              }}
             />
           }
         </div>

@@ -20,6 +20,7 @@ function network(state = {
       isFetching: false,
       nodes: action.nodes,
       edges: action.edges,
+      groups: action.groups,
       lastUpdated: action.receivedAt,
     };
   default:

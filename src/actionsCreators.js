@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import * as api from 'utils/api';
 import * as actions from 'actions';
 
@@ -16,11 +18,18 @@ function requestNetwork() {
   };
 }
 
-function receiveNetwork({nodes, edges}) {
+function receiveNetwork({nodes, edges, groups}) {
   return {
     type: actions.RECEIVE_NETWORK,
     nodes,
     edges,
+    groups: _.indexBy(_.map(groups, ({id, color}) => ({
+      id,
+      color: {
+        background: color,
+        border: color,
+      },
+    })), 'id'),
     receivedAt: Date.now(),
   };
 }
