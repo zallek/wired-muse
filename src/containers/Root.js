@@ -5,6 +5,7 @@ import configureStore from 'configureStore';
 import App from 'containers/App';
 
 import './Root.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 const store = configureStore();
