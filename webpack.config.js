@@ -10,11 +10,13 @@ const es6Modules = [
   'vis',
 ];
 
+const cssConfig = {
+  modules: true,
+  importLoaders: 1,
+  localIdentName: '[name]__[local]___[hash:base64:5]',
+};
 const autoprefixerConfig = {
   browsers: ['Firefox > 27', 'Chrome > 20', 'Explorer > 9', 'Safari > 6', 'Opera > 11.5', 'iOS > 6.1'],
-};
-const sassConfig = {
-  outputStyle: 'expanded',
 };
 
 export default {
@@ -56,12 +58,8 @@ export default {
         include: es6Modules.map(mod => RegExp(mod)),
       },
       {
-        test: /\.scss$/,
-        loader: 'style!css!autoprefixer?' + JSON.stringify(autoprefixerConfig) + '!sass?' + JSON.stringify(sassConfig),
-      },
-      {
         test: /\.css$/,
-        loader: 'style!css!autoprefixer?' + JSON.stringify(autoprefixerConfig),
+        loader: 'style!css?' + JSON.stringify(cssConfig) + '!autoprefixer?' + JSON.stringify(autoprefixerConfig),
       },
       {
         test: /\.png$/,
