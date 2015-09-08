@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchNetwork } from '../actionsCreators';
-import VisNetwork from 'components/VisNetwork';
-import * as NetworkPropTypes from 'proptypes/network';
+import { fetchRoom, reinforceNode } from '../actionsCreators';
+import Room from 'components/Room';
+import * as RoomPropTypes from 'proptypes/room';
 
 import styles from './App.css';
 
@@ -13,28 +13,40 @@ class App extends Component {
   static displayName = 'App';
 
   static propTypes = {
-    network: PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
+    room: PropTypes.shape({
       isFetching: PropTypes.bool.isRequired,
+      isLoaded: PropTypes.bool.isRequired,
       lastUpdated: PropTypes.number,
-      nodes: PropTypes.arrayOf(NetworkPropTypes.node),
-      edges: PropTypes.arrayOf(NetworkPropTypes.edge),
+      nodes: PropTypes.arrayOf(RoomPropTypes.node).isRequired,
+      edges: PropTypes.arrayOf(RoomPropTypes.edge).isRequired,
+      users: PropTypes.arrayOf(RoomPropTypes.user).isRequired,
     }).isRequired,
     dispatch: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchNetwork());
+    dispatch(fetchRoom());
+  }
+
+  handleReinforceNode(...options) {
+    const { dispatch } = this.props;
+    dispatch(reinforceNode(...options));
   }
 
   render() {
     const {
-      network: {
+      user,
+      room: {
         isFetching,
+        isLoaded,
         lastUpdated,
         nodes,
         edges,
-        groups,
+        users,
       },
     } = this.props;
 
@@ -50,30 +62,18 @@ class App extends Component {
           }
         </div>
         <div
-          className={isFetching ? styles.networkFetching : styles.network}
+          className={isFetching ? styles.roomFetching : styles.room}
         >
           {isFetching &&
             <h2>Loading...</h2>
           }
-          {nodes.length > 0 &&
-            <VisNetwork
-              nodes={nodes.map(node => ({
-                ...node,
-                shape: 'dot',
-                mass: node.value,
-              }))}
-              edges={edges.map(edge => ({
-                ...edge,
-                color: {
-                  inherit: false,
-                },
-                smooth: {
-                  enabled: false,
-                },
-              }))}
-              options={{
-                groups,
-              }}
+          {isLoaded &&
+            <Room
+              user={user}
+              nodes={nodes}
+              edges={edges}
+              users={users}
+              reinforceNode={::this.handleReinforceNode}
             />
           }
         </div>
@@ -84,9 +84,10 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  const { network } = state;
+  const { user, room } = state;
   return {
-    network,
+    user,
+    room,
   };
 }
 

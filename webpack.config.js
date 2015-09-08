@@ -41,7 +41,7 @@ export default {
   resolve: {
     extensions: ['', '.js'],
     alias: {
-      'vis-network': 'vis/lib/network/Network.js',
+      'vis-network': 'vis/lib',
     },
     root: [npmPath, srcPath],
   },

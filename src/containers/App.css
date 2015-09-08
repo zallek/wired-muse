@@ -7,7 +7,7 @@
   z-index: 1;
 }
 
-.network {
+.room {
   position: absolute;
   top: 0;
   left: 0;
@@ -16,7 +16,7 @@
   background-color: #1D2226;
 }
 
-.networkFetching {
-  composes: network;
+.roomFetching {
+  composes: room;
   opacity: 0.5;
 }

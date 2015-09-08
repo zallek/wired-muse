@@ -1,19 +1,20 @@
-import React, { PropTypes } from 'react';
-import cx from 'classnames';
-import Network from 'vis-network';
+import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
 
+import Network from 'vis-network/network/Network';
+import DataSet from 'vis-network/DataSet';
 import * as NetworkPropTypes from 'proptypes/network';
 
 
-export default class VisNetwork extends React.Component {
+export default class VisNetwork extends Component {
 
   static displayName = 'VisNetwork';
 
   static propTypes = {
-    className: PropTypes.string,
     nodes: PropTypes.arrayOf(NetworkPropTypes.node),
     edges: PropTypes.arrayOf(NetworkPropTypes.edge),
     options: PropTypes.object, // http://visjs.org/docs/network/#options
+    eventHandlers: PropTypes.object,
   };
 
   static defaultProps = {
@@ -26,19 +27,38 @@ export default class VisNetwork extends React.Component {
     this.componentDidUpdate();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.nodes !== this.props.nodes) {
+      this.nodes.update(nextProps.nodes);
+    }
+    if (nextProps.edges !== this.props.edges) {
+      this.edges.update(nextProps.edges);
+    }
+  }
+
+  shouldComponentUpdate() {
+    return false;
+  }
+
   componentDidUpdate() {
-    const { nodes, edges, options } = this.props;
-    const node = React.findDOMNode(this.refs.network);
-    this.network = new Network(node, { nodes, edges }, options);
+    const { nodes, edges, options, eventHandlers } = this.props;
+    const domNode = React.findDOMNode(this.refs.network);
+
+    this.nodes = new DataSet(nodes);
+    this.edges = new DataSet(edges);
+
+    this.network = new Network(domNode, { nodes: this.nodes, edges: this.edges }, options);
+    _.each(eventHandlers, (handler, eventName) => {
+      this.network.on(eventName, handler);
+    });
   }
 
   render() {
-    const { className, ...othersProps } = this.props;
+    const { nodes, edges, options, eventHandlers, ...othersProps } = this.props;
 
     return (
       <div
         ref="network"
-        className={cx('VisNetwork', className)}
         { ...othersProps }
       ></div>
     );

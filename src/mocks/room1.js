@@ -1,0 +1,30 @@
+export default {
+  nodes: [
+    {id: 1, ownerId: 1, power: 1, maxPower: 1},
+    {id: 2, ownerId: 1, power: 1, maxPower: 2},
+    {id: 3, ownerId: 1, power: 2, maxPower: 2},
+    {id: 4, ownerId: 1, power: 1, maxPower: 1},
+    {id: 5, ownerId: 1, power: 1, maxPower: 1},
+    {id: 6, ownerId: 1, power: 1, maxPower: 1},
+    {id: 7, ownerId: 2, power: 1, maxPower: 1},
+    {id: 8, ownerId: 2, power: 2, maxPower: 3},
+    {id: 9, ownerId: 2, power: 3, maxPower: 3},
+  ],
+  edges: [
+    {from: 1, to: 2},
+    {from: 1, to: 3},
+    {from: 2, to: 4},
+    {from: 2, to: 5},
+    {from: 2, to: 8},
+    {from: 4, to: 6},
+    {from: 4, to: 8},
+    {from: 4, to: 9},
+    {from: 7, to: 8},
+    {from: 7, to: 9},
+    {from: 8, to: 9},
+  ],
+  users: [
+    {id: 1, color: '#F0AB00'},
+    {id: 2, color: '#0756A5'},
+  ],
+};

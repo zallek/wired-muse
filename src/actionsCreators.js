@@ -1,35 +1,54 @@
-import _ from 'lodash';
-
-import * as api from 'utils/api';
-import * as actions from 'actions';
+import * as Api from 'utils/api';
+import * as Actions from 'actions';
 
 
-export function fetchNetwork() {
+export function fetchRoom() {
   return dispatch => {
-    dispatch(requestNetwork());
-    api.fetchNetwork()
-      .then(network => dispatch(receiveNetwork(network)));
+    dispatch(requestRoom());
+    Api.fetchRoom()
+      .then(network => dispatch(receiveRoom(network)));
   };
 }
 
-function requestNetwork() {
+function requestRoom() {
   return {
-    type: actions.REQUEST_NETWORK,
+    type: Actions.REQUEST_ROOM,
   };
 }
 
-function receiveNetwork({nodes, edges, groups}) {
+function receiveRoom({nodes, edges, users}) {
   return {
-    type: actions.RECEIVE_NETWORK,
+    type: Actions.RECEIVE_ROOM,
     nodes,
     edges,
-    groups: _.indexBy(_.map(groups, ({id, color}) => ({
-      id,
-      color: {
-        background: color,
-        border: color,
-      },
-    })), 'id'),
+    users,
     receivedAt: Date.now(),
+  };
+}
+
+function roomOutOfSync() {
+  return {
+    type: Actions.ROOM_OUT_OF_SYNC,
+  };
+}
+
+
+export function reinforceNode(nodeId, power) {
+  return (dispatch, getState) => {
+    const { user } = getState();
+    dispatch(reinforceNodeOptimistic(nodeId, power));
+    Api.reinforceNode(user.id, nodeId, power)
+      .catch(err => {
+        dispatch(roomOutOfSync());
+        dispatch(fetchRoom());
+      });
+  };
+}
+
+function reinforceNodeOptimistic(nodeId, power) {
+  return {
+    type: Actions.REINFORCE_NODE_OPTIMISTIC,
+    nodeId,
+    power,
   };
 }

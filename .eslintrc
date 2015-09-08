@@ -3,7 +3,6 @@
   "rules": {
     "no-use-before-define": [2, "nofunc"],
     "no-unused-vars": [2, {"vars": "all", "args": "none"}],
-    "valid-jsdoc": 2,
 
     "no-undef": 2,  //Till fixed
   },
