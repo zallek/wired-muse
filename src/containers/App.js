@@ -15,7 +15,7 @@ class App extends Component {
   static propTypes = {
     user: PropTypes.shape({
       id: PropTypes.number.isRequired,
-    }),
+    }).isRequired,
     room: PropTypes.shape({
       isFetching: PropTypes.bool.isRequired,
       isLoaded: PropTypes.bool.isRequired,

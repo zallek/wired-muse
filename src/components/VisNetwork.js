@@ -14,7 +14,7 @@ export default class VisNetwork extends Component {
     nodes: PropTypes.arrayOf(NetworkPropTypes.node),
     edges: PropTypes.arrayOf(NetworkPropTypes.edge),
     options: PropTypes.object, // http://visjs.org/docs/network/#options
-    eventHandlers: PropTypes.object,
+    eventHandlers: PropTypes.objectOf(PropTypes.func),
   };
 
   static defaultProps = {

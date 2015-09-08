@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
 
 import VisNetwork from 'components/VisNetwork';
-import * as RoomPropTypes from 'proptypes/network';
+import * as RoomPropTypes from 'proptypes/room';
 import * as GameMechanics from 'utils/gameMechanics';
 
 
