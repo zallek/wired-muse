@@ -72,6 +72,10 @@ export default class Room extends Component {
             color: {
               background: color,
               border: color,
+              highlight: {
+                background: color,
+                border: color,
+              },
             },
           })), 'id'),
           interaction: {
@@ -79,7 +83,7 @@ export default class Room extends Component {
           },
         }}
         eventHandlers={{
-          selectNode: (e) => ::this.handleClickNode(Number(e.nodes[0])),
+          click: (e) => e.nodes[0] && ::this.handleClickNode(Number(e.nodes[0])),
         }}
         { ...othersProps }
       />

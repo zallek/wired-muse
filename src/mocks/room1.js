@@ -1,10 +1,10 @@
 export default {
   nodes: [
-    {id: 1, ownerId: 1, power: 1, maxPower: 1},
-    {id: 2, ownerId: 1, power: 1, maxPower: 2},
-    {id: 3, ownerId: 1, power: 2, maxPower: 2},
-    {id: 4, ownerId: 1, power: 1, maxPower: 1},
-    {id: 5, ownerId: 1, power: 1, maxPower: 1},
+    {id: 1, ownerId: 1, power: 1, maxPower: 3},
+    {id: 2, ownerId: 1, power: 1, maxPower: 3},
+    {id: 3, ownerId: 1, power: 2, maxPower: 3},
+    {id: 4, ownerId: 1, power: 1, maxPower: 2},
+    {id: 5, ownerId: 1, power: 1, maxPower: 2},
     {id: 6, ownerId: 1, power: 1, maxPower: 1},
     {id: 7, ownerId: 2, power: 1, maxPower: 1},
     {id: 8, ownerId: 2, power: 2, maxPower: 3},
