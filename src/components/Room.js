@@ -5,6 +5,10 @@ import VisNetwork from 'components/VisNetwork';
 import * as RoomPropTypes from 'proptypes/room';
 import * as GameMechanics from 'utils/gameMechanics';
 
+import style from './Room.css';
+
+
+const REINFORCE_NODE_MIN_POWER = 1;
 
 export default class Room extends Component {
 
@@ -32,6 +36,10 @@ export default class Room extends Component {
     }
   }
 
+  state = {
+    hoveringNodeId: null,
+  };
+
   handleClickNode(nodeId) {
     const { user, reinforceNode } = this.props;
     const node = this.nodesIndex[nodeId];
@@ -42,10 +50,22 @@ export default class Room extends Component {
     }
   }
 
+  isNodeClickable(nodeId) {
+    const { user } = this.props;
+    const node = nodeId && this.nodesIndex[nodeId];
+    return node &&
+      (GameMechanics.canReinforceNode(user, node, REINFORCE_NODE_MIN_POWER)
+      || GameMechanics.canAttackNode(user, node));
+  }
+
   render() {
-    const { nodes, edges, users, ...othersProps } = this.props;
+    const { user, nodes, edges, users, ...othersProps } = this.props;
+    const { hoveringNodeId } = this.state;
+
+    const hoveringClickableNode = this.isNodeClickable(hoveringNodeId);
 
     return (
+      <div className={hoveringClickableNode && style.roomClickable}>
       <VisNetwork
         nodes={nodes
           .map(({id, ownerId, power}) => ({
@@ -80,13 +100,20 @@ export default class Room extends Component {
           })), 'id'),
           interaction: {
             dragNodes: false,
+            hover: true,
+          },
+          physics: {
+            enabled: false,
           },
         }}
         eventHandlers={{
           click: (e) => e.nodes[0] && ::this.handleClickNode(Number(e.nodes[0])),
+          hoverNode: (e) => this.setState({hoveringNodeId: e.node}),
+          blurNode: (e) => this.setState({hoveringNodeId: null}),
         }}
         { ...othersProps }
       />
+      </div>
     );
   }
 

@@ -1,0 +1,7 @@
+.room {
+}
+
+.roomClickable {
+  composes: room;
+  cursor: pointer;
+}
