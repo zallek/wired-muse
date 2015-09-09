@@ -66,53 +66,53 @@ export default class Room extends Component {
 
     return (
       <div className={hoveringClickableNode && style.roomClickable}>
-      <VisNetwork
-        nodes={nodes
-          .map(({id, ownerId, power}) => ({
-            id,
-            group: ownerId,
-            value: power,
-            shape: 'dot',
-          }))
-        }
-        edges={edges
-          .map(edge => ({
-            ...edge,
-            color: {
-              inherit: false,
-            },
-            smooth: {
-              enabled: false,
-            },
-          }))
-        }
-        options={{
-          groups: _.indexBy(users.map(({id, color}) => ({
-            id,
-            color: {
-              background: color,
-              border: color,
-              highlight: {
+        <VisNetwork
+          nodes={nodes
+            .map(({id, ownerId, power}) => ({
+              id,
+              group: ownerId,
+              value: power,
+              shape: 'dot',
+            }))
+          }
+          edges={edges
+            .map(edge => ({
+              ...edge,
+              color: {
+                inherit: false,
+              },
+              smooth: {
+                enabled: false,
+              },
+            }))
+          }
+          options={{
+            groups: _.indexBy(users.map(({id, color}) => ({
+              id,
+              color: {
                 background: color,
                 border: color,
+                highlight: {
+                  background: color,
+                  border: color,
+                },
               },
+            })), 'id'),
+            interaction: {
+              dragNodes: false,
+              hover: true,
             },
-          })), 'id'),
-          interaction: {
-            dragNodes: false,
-            hover: true,
-          },
-          physics: {
-            enabled: false,
-          },
-        }}
-        eventHandlers={{
-          click: (e) => e.nodes[0] && ::this.handleClickNode(Number(e.nodes[0])),
-          hoverNode: (e) => this.setState({hoveringNodeId: e.node}),
-          blurNode: (e) => this.setState({hoveringNodeId: null}),
-        }}
-        { ...othersProps }
-      />
+            physics: {
+              enabled: false,
+            },
+          }}
+          eventHandlers={{
+            click: (e) => e.nodes[0] && ::this.handleClickNode(Number(e.nodes[0])),
+            hoverNode: (e) => this.setState({hoveringNodeId: e.node}),
+            blurNode: (e) => this.setState({hoveringNodeId: null}),
+          }}
+          { ...othersProps }
+        />
       </div>
     );
   }
